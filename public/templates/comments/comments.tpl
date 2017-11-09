@@ -18,8 +18,8 @@
     </div>
     <!-- IF !isLoggedIn -->
         <span class="login-info">[[plugin:loginToAdd]]</span>
-        <button class="btn btn-primary" id="nodebb-register">[[plugin:register]]</button>
-        <button class="btn btn-primary" id="nodebb-login">[[plugin:login]]</button>
+        <a href="/register" class="btn btn-primary">[[plugin:register]]</a>
+        <a href="/login" class="btn btn-primary">[[plugin:login]]</a>
     <!-- ELSE -->
         <div class="topic-profile-pic user first-image">
             <!-- IF user.picture -->
