@@ -297,7 +297,7 @@ var blogComments2Common = function (commentPositionDiv, nbb, kwargs) {
 
       });
 
-      bindOnClick(nodebbDiv.querySelectorAll('[component="post/edit"]'), function (e) {
+      bindOnClick(nodebbDiv.querySelectorAll('[component="post/edit"]'), function (event) {
         var topicItem = getTopicItem(event.target);
         var form = topicItem.querySelector('.edit-input');
         var textarea = topicItem.querySelector('#edit-content');
