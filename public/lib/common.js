@@ -207,15 +207,6 @@ var blogComments2Common = function (commentPositionDiv, nbb, kwargs) {
   function setupContent(data){
     contentDiv = document.getElementById('nodebb-content');
 
-    setTimeout(function() {
-      var lists = nodebbDiv.getElementsByTagName("li");
-      for (var list in lists) {
-        if (lists.hasOwnProperty(list)) {
-          lists[list].className = '';
-        }
-      }
-    }, 100);
-
     if (savedText) {
       contentDiv.value = savedText;
     }
