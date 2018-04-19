@@ -80,6 +80,13 @@
                                             </a>
                                         </li>
                                         <!-- ENDIF !posts.selfPost -->
+                                        <!-- IF isAdmin -->
+                                        <li>
+                                            <a component="post/purge">
+                                                Delete
+                                            </a>
+                                        </li>
+                                        <!-- ENDIF isAdmin -->
                                         <!--<li>-->
                                             <!--<a component="post/quote">-->
                                                 <!--<i class="icon-quote-right"></i> Quote-->
