@@ -187,6 +187,7 @@ var blogComments2Common = function (commentPositionDiv, nbb, kwargs) {
 
   function setupForms(){
     var forms = $('#nodebb').find('form');
+    var submitting = false;
 
     forms.find('textarea').on('input propertychange', function(){
       var enabled = $(this).val().length > window.config.minimumPostLength;
@@ -197,10 +198,15 @@ var blogComments2Common = function (commentPositionDiv, nbb, kwargs) {
 
     forms.on("submit", function(e){
       e.preventDefault();
-      var form = $(this), action = form.attr('action'), data = form.serialize();
-      $.post(action, data, function (){
-        reloadComments();
-      });
+      if (!submitting) {
+        submitting = true;
+
+        var form = $(this), action = form.attr('action'), data = form.serialize();
+        $.post(action, data, function () {
+          reloadComments();
+          submitting = false;
+        });
+      }
     });
   }
 
