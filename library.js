@@ -216,10 +216,7 @@
 				var notificationKey = 'notifications:new_post:tid:' + postData.tid + ':pid:' + postData.pid + ':uid:' + postData.uid;
 				var body = '[[urstyle:notification.user_commented_' + commentType + ', ' + postData.user.username + ', ' + postData.topic.title + ']]';
 				var path = '/' + commentType + 's/' + url.split('/').pop();
-
-				console.log(notificationKey);
-				console.log(body);
-				console.log(path);
+				
 				res.redirect(get_redirect_url(url, err));
 
 				db.setObjectField(notificationKey, 'bodyShort', body, function(e){
