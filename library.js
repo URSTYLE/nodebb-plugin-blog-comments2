@@ -212,10 +212,10 @@
 			var position = meta.config['blog-comments:cid'].toString().split(',').indexOf(postData.cid.toString());
 			var commentType = meta.config['blog-comments:name'].split(',')[position];
 
-			db.getObjectField('post:' + postData.topic.mainPid, 'blog-comments:url', function(e, url){
+			db.getObjectField('post:' + postData.topic.mainPid, 'blog-comments:url', function(e, itemUrl){
 				var notificationKey = 'notifications:new_post:tid:' + postData.tid + ':pid:' + postData.pid + ':uid:' + postData.uid;
 				var body = '[[urstyle:notification.user_commented_' + commentType + ', ' + postData.user.username + ', ' + postData.topic.title + ']]';
-				var path = '/' + commentType + 's/' + url.split('/').pop();
+				var path = '/' + commentType + 's/' + itemUrl.split('/').pop();
 				
 				res.redirect(get_redirect_url(url, err));
 
