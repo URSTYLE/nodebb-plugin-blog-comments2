@@ -208,7 +208,24 @@
 			toPid: toPid,
 			content: content
 		}, function(err, postData) {
-			res.redirect(get_redirect_url(url, err));
+			// get comment type from config based on category id
+			var position = meta.config['blog-comments:cid'].toString().split(',').indexOf(postData.cid.toString());
+			var commentType = meta.config['blog-comments:name'].split(',')[position];
+
+			db.getObjectField('post:' + postData.topic.mainPid, 'blog-comments:url', function(e, url){
+				var notificationKey = 'notifications:new_post:tid:' + postData.tid + ':pid:' + postData.pid + ':uid:' + postData.uid;
+				var body = '[[urstyle:notification.user_commented_' + commentType + ', ' + postData.user.username + ', ' + postData.topic.title + ']]';
+				var path = '/' + commentType + 's/' + url.split('/').pop();
+				
+				res.redirect(get_redirect_url(url, err));
+
+				db.setObjectField(notificationKey, 'bodyShort', body, function(e){
+					console.log(e)
+				});
+				db.setObjectField(notificationKey, 'path', path, function(e){
+					console.log(e)
+				});
+      });
 		});
 	};
 
