@@ -7,6 +7,7 @@
 		meta = module.parent.require('../src/meta.js'),
 		posts = module.parent.require('../src/posts.js'),
 		topics = module.parent.require('../src/topics.js'),
+		notifications = module.parent.require('../src/notifications.js'),
 		user = module.parent.require('../src/user.js'),
 		groups = module.parent.require('../src/groups.js'),
 		fs = module.parent.require('fs'),
@@ -212,19 +213,30 @@
 			var position = meta.config['blog-comments:cid'].toString().split(',').indexOf(postData.cid.toString());
 			var commentType = meta.config['blog-comments:name'].split(',')[position];
 
-			db.getObjectField('post:' + postData.topic.mainPid, 'blog-comments:url', function(e, url){
-				var notificationKey = 'notifications:new_post:tid:' + postData.tid + ':pid:' + postData.pid + ':uid:' + postData.uid;
+			db.getObjectFields('post:' + postData.topic.mainPid, ['blog-comments:url', 'uid'], function(e, data){
+				var nid = 'notifications:new_comment:tid:' + postData.tid + ':pid:' + postData.pid + ':uid:' + postData.uid;
 				var body = '[[urstyle:notification.user_commented_' + commentType + ', ' + postData.user.username + ', ' + postData.topic.title + ']]';
-				var path = '/' + commentType + 's/' + url.split('/').pop();
-				
-				res.redirect(get_redirect_url(url, err));
+				var path = '/' + commentType + 's/' + data['blog-comments:url'].split('/').pop();
 
-				db.setObjectField(notificationKey, 'bodyShort', body, function(e){
-					console.log(e)
-				});
-				db.setObjectField(notificationKey, 'path', path, function(e){
-					console.log(e)
-				});
+				// don't send notification to owner
+				if (parseInt(data.uid) !== parseInt(uid)){
+					notifications.create({
+						type: 'new-comment',
+						bodyShort: body,
+						bodyLong: '',
+						path: path,
+						nid: nid,
+						from: uid,
+					}, function (err, notification) {
+						if (err || !notification) {
+							return next(err);
+						}
+
+						notifications.push(notification, [data.uid]);
+					});
+				}
+
+				res.redirect(get_redirect_url(url, err));
       });
 		});
 	};
