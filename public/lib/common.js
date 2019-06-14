@@ -202,9 +202,16 @@ var blogComments2Common = function (commentPositionDiv, nbb, kwargs) {
         submitting = true;
 
         var form = $(this), action = form.attr('action'), data = form.serialize();
+
+        $(this)
+          .find('button')
+          .attr("disabled", true);
+        NProgress.set(0.7);
+
         $.post(action, data, function () {
           reloadComments();
           submitting = false;
+          NProgress.done();
         });
       }
     });
